@@ -11,7 +11,7 @@ STYLES_BUNDLE = css/all.bundle.css
 STYLES_DESTINATION = css/all.css
 STYLES_MAIN = css/main.scss
 WEBPACK = ./node_modules/.bin/webpack
-WEBPACK_DEV_SERVER = ./node_modules/.bin/webpack-dev-server
+WEBPACK_DEV_SERVER = ./node_modules/.bin/webpack-dev-server --host 0.0.0.0 --disable-host-check
 
 all: compile deploy clean
 
@@ -24,8 +24,7 @@ clean:
 deploy: deploy-init deploy-appbundle deploy-rnnoise-binary deploy-lib-jitsi-meet deploy-libflac deploy-css deploy-local
 
 deploy-init:
-	rm -fr $(DEPLOY_DIR)
-	mkdir -p $(DEPLOY_DIR)
+	rm -fr $(DEPLOY_DIR)/*
 
 deploy-appbundle:
 	cp \
@@ -73,8 +72,7 @@ deploy-rnnoise-binary:
 
 deploy-css:
 	$(NODE_SASS) $(STYLES_MAIN) $(STYLES_BUNDLE) && \
-	$(CLEANCSS) $(STYLES_BUNDLE) > $(STYLES_DESTINATION) ; \
-	rm $(STYLES_BUNDLE)
+	$(CLEANCSS) $(STYLES_BUNDLE) > $(STYLES_DESTINATION) ;
 
 deploy-local:
 	([ ! -x deploy-local.sh ] || ./deploy-local.sh)
